@@ -1,9 +1,10 @@
 package com.example.userapp.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cart {
+public class Cart implements Serializable {
 
     public Map<String, CartItem> map = new HashMap<>();
     public Map<String, Integer> totalItemMap = new HashMap<>();
@@ -106,4 +107,12 @@ public class Cart {
 
     }
 
+    public int getVarientQuantityFromCart(Product product, Varient varient) {
+        String key = product.name + " " + varient.name;
+        if (map.containsKey(key)) {
+            return (int) map.get(key).quantity;
+        }
+
+        return 0;
+    }
 }

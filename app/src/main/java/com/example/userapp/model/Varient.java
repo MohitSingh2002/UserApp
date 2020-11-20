@@ -1,6 +1,8 @@
 package com.example.userapp.model;
 
-public class Varient {
+import java.io.Serializable;
+
+public class Varient implements Serializable {
 
     public String name;
     public int price;
