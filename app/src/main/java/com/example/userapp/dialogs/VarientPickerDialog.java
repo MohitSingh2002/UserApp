@@ -34,10 +34,12 @@ public class VarientPickerDialog {
                 .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int quantity = cart.totalItemMap.get(product.name);
 
-                        if (quantity > 0) {
-                            listener.onVarientsPicked(quantity);
+                        if (cart.totalItemMap.containsKey(product.name)) {
+                            int quantity = cart.totalItemMap.get(product.name);
+                            if (quantity > 0) {
+                                listener.onVarientsPicked(quantity);
+                            }
                         } else {
                             listener.onRemoveAll();
                         }

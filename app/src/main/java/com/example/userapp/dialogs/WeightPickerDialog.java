@@ -62,7 +62,7 @@ public class WeightPickerDialog {
             float quantity = cart.map.get(product.name).quantity;
 
             binding.numberPickerKg.setValue((int) quantity);
-            binding.numberPickerG.setValue((int) ((quantity - (int) quantity) * 1000) / 50);
+            binding.numberPickerG.setValue(Math.round(((quantity - (int) quantity) * 1000) / 50));
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.userapp.databinding.ActivityCartBinding;
 import com.example.userapp.databinding.CartItemViewBinding;
@@ -46,9 +47,22 @@ public class CartActivity extends AppCompatActivity {
                 b.cartItemWeight.setText((int) (map.getValue().quantity) + "kg x Rs. " + (map.getValue().price) / ((int) (map.getValue().quantity)) + "/kg");
             }
 
+            setupDeleteButton(b, map.getKey(), map.getValue(), cart);
+
 
             binding.cartItems.addView(b.getRoot());
         }
+    }
+
+    private void setupDeleteButton(CartItemViewBinding b, String key, CartItem value, Cart cart) {
+        b.deleteCartItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cart.map.remove(key);
+
+                binding.cartItems.removeView(b.getRoot());
+            }
+        });
     }
 
 }
