@@ -115,4 +115,14 @@ public class Cart implements Serializable {
 
         return 0;
     }
+
+    public void removeItemWithKey(String key, CartItem value) {
+        map.remove(key);
+        noOfItems -= value.quantity;
+
+        totalPrice -= value.price;
+
+        totalItemMap.remove(key.replaceAll(" +\\d+kg", ""));
+    }
+
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.userapp.databinding.ActivityCartBinding;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class CartActivity extends AppCompatActivity {
 
     ActivityCartBinding binding;
-//    Cart cart;
+    Cart cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +26,16 @@ public class CartActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        Cart cart = (Cart) intent.getSerializableExtra("data");
+        cart = (Cart) intent.getSerializableExtra("data");
 
-        showCartItems(cart);
+        showCartItems();
+
+        showItemsAndPrice();
 
     }
 
-    private void showCartItems(Cart cart) {
+
+    private void showCartItems() {
         for(Map.Entry<String, CartItem> map : cart.map.entrySet()) {
             CartItemViewBinding b = CartItemViewBinding.inflate(
                     getLayoutInflater()
@@ -47,22 +51,43 @@ public class CartActivity extends AppCompatActivity {
                 b.cartItemWeight.setText((int) (map.getValue().quantity) + "kg x Rs. " + (map.getValue().price) / ((int) (map.getValue().quantity)) + "/kg");
             }
 
-            setupDeleteButton(b, map.getKey(), map.getValue(), cart);
+            setupDeleteButton(b, map.getKey(), map.getValue());
 
 
             binding.cartItems.addView(b.getRoot());
         }
     }
 
-    private void setupDeleteButton(CartItemViewBinding b, String key, CartItem value, Cart cart) {
+    private void setupDeleteButton(CartItemViewBinding b, String key, CartItem value) {
         b.deleteCartItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cart.map.remove(key);
+
+                cart.removeItemWithKey(key, value);
 
                 binding.cartItems.removeView(b.getRoot());
+
+                showItemsAndPrice();
             }
         });
+    }
+
+    private void showItemsAndPrice() {
+        binding.items.setText("Items : " +  cart.noOfItems);
+        binding.price.setText("Price : Rs. " + cart.totalPrice);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent latestCartIntent = new Intent();
+            latestCartIntent.putExtra("new", cart);
+            setResult(RESULT_OK, latestCartIntent);
+            finish();
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 }

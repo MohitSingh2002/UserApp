@@ -1,5 +1,6 @@
 package com.example.userapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.userapp.adapter.ProductesAdapter;
@@ -38,9 +40,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 intent.putExtra("data", cart);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Cart newCart = (Cart) data.getSerializableExtra("new");
+
+                cart = newCart;
+
+                cart.printCart();
+
+//                setupList();
+                updateCheckOutSummary();
+            }
+        }
 
     }
 
