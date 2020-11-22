@@ -6,4 +6,4 @@
 ![d](https://user-images.githubusercontent.com/62237653/99767324-de1c1280-2b28-11eb-874f-1e83bcf603c5.jpg)
 ![e](https://user-images.githubusercontent.com/62237653/99767346-e96f3e00-2b28-11eb-914a-211605632120.jpg)
 
-Download [APK](https://github.com/MohitSinghFlutter/UserApp/releases/download/v1.1/app-debug.apk)
+Download [APK](https://github.com/MohitSinghFlutter/UserApp/releases/download/v1.2/app-debug.apk)
