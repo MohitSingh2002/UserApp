@@ -125,4 +125,12 @@ public class Cart implements Serializable {
         totalItemMap.remove(key.replaceAll(" +\\d+kg", ""));
     }
 
+    public void changeCart(Cart newCart) {
+        Cart thiscart = this;
+        thiscart.map = newCart.map;
+        thiscart.totalItemMap = newCart.totalItemMap;
+        thiscart.noOfItems = newCart.noOfItems;
+        thiscart.totalPrice = newCart.totalPrice;
+    }
+
 }

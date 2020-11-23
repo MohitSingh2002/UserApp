@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     Cart cart = new Cart();
+    private ProductesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Cart newCart = (Cart) data.getSerializableExtra("new");
 
-                cart = newCart;
+                cart.changeCart(newCart);
 
-                cart.printCart();
+                adapter.notifyDataSetChanged();
 
-//                setupList();
                 updateCheckOutSummary();
             }
         }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(mango);
         list.add(kiwi);
 
-        ProductesAdapter adapter = new ProductesAdapter(this, list, cart);
+        adapter = new ProductesAdapter(this, list, cart);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
