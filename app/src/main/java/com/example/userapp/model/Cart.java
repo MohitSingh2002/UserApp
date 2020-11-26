@@ -10,6 +10,9 @@ public class Cart implements Serializable {
     public Map<String, Integer> totalItemMap = new HashMap<>();
     public int noOfItems, totalPrice;
 
+    public Cart() {
+    }
+
     public int addVarientBasedProductToCart(Product product, Varient varient) {
         String key = product.name + " " + varient.name;
         if (map.containsKey(key)) {

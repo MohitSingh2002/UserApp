@@ -6,13 +6,16 @@ import java.util.List;
 
 public class Product implements Serializable {
 
-    public static final byte WEIGHT_BASED = 0, VARIENTS_BASED = 1;
+    public static final int WEIGHT_BASED = 0, VARIENTS_BASED = 1;
 
     public String name;
-    public byte type;
+    public int type;
     public int pricePerKg;
     public float minQty;
     public List<Varient> varientsList = new ArrayList<>();
+
+    public Product() {
+    }
 
     public Product(String name, int pricePerKg, float minQty) {
         type = WEIGHT_BASED;

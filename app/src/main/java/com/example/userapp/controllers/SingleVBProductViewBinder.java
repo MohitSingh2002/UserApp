@@ -49,6 +49,10 @@ public class SingleVBProductViewBinder {
             }
         });
 
+        if (cart.totalItemMap.containsKey(product.name + " " + product.varientsList.get(0).name)) {
+            updateViews(cart.totalItemMap.get(product.name + " " + product.varientsList.get(0).name));
+        }
+
     }
 
     private void updateViews(int quantity) {
@@ -65,6 +69,7 @@ public class SingleVBProductViewBinder {
         }
 
         binding.quantitySingleVb.setText("" + quantity);
+
         updateCheckOutSummary();
 
     }
