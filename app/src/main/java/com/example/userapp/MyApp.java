@@ -4,10 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.userapp.databinding.CircularLoadingLottieBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MyApp extends Application {
@@ -28,9 +30,10 @@ public class MyApp extends Application {
     }
 
     public void showLoadingDialog(Context context) {
-        dialog = new AlertDialog.Builder(context)
-                .setTitle("Loading...")
-                .setMessage("Please Wait")
+        CircularLoadingLottieBinding binding = CircularLoadingLottieBinding.inflate(LayoutInflater.from(context));
+        dialog = new AlertDialog.Builder(context, R.style.CustomAlertDialog)
+                .setCancelable(false)
+                .setView(binding.getRoot())
                 .show();
     }
 

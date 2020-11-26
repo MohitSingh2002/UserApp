@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     private void fetchProductsListFromCloudFirestore() {
 
         if (app.isOffline()) {
-            Toast.makeText(this, "No Internet!", Toast.LENGTH_SHORT).show();
+            app.showToast(MainActivity.this, "No Internet!");
             return;
         }
 
