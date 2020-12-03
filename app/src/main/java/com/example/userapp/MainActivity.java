@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,9 +23,13 @@ import com.example.userapp.model.Cart;
 import com.example.userapp.model.Inventory;
 import com.example.userapp.model.Product;
 import com.example.userapp.model.Varient;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,11 +44,18 @@ public class MainActivity extends AppCompatActivity {
     private List<Product> list;
     private MyApp app;
 
+    SharedPreferences preferences;
+    String sharedPreferencesFile = "com.example.android.userapp";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        preferences = getSharedPreferences(sharedPreferencesFile, MODE_PRIVATE);
+
+        FirebaseMessaging.getInstance().subscribeToTopic(Constants.USER_TOPIC);
 
 //        setupList();
 
@@ -116,28 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupList() {
 
-//        list = new ArrayList<>();
-//        Product apple = new Product("Apple", 10, 1);
-//        Product banana = new Product("Banana");
-//        Varient banana1 = new Varient("1kg", 20);
-//        Varient banana2 = new Varient("2kg", 30);
-//        Varient banana3 = new Varient("3kg", 40);
-//        banana.varientsList.add(banana1);
-//        banana.varientsList.add(banana2);
-//        banana.varientsList.add(banana3);
-//        Product mango = new Product("Mango");
-//        Varient mango1 = new Varient("5kg", 50);
-//        mango.varientsList.add(mango1);
-//
-//        Product kiwi = new Product("Kiwi");
-//        Varient kiwi1 = new Varient("2kg", 25);
-//        kiwi.varientsList.add(kiwi1);
-//
-//        list.add(apple);
-//        list.add(banana);
-//        list.add(mango);
-//        list.add(kiwi);
-
         adapter = new ProductesAdapter(this, list, cart);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -155,6 +147,39 @@ public class MainActivity extends AppCompatActivity {
             binding.checkout.setVisibility(View.VISIBLE);
             binding.cartSummary.setText("Total: Rs. " + cart.totalPrice + "\n" + cart.noOfItems + " items");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            logout();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        AuthUI.getInstance()
+                .signOut(MainActivity.this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUserLoggedInStateInSharedPrefs();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    }
+                });
+    }
+
+    private void updateUserLoggedInStateInSharedPrefs() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.LOGIN_STATE, false);
+        editor.apply();
     }
 
 }
