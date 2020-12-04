@@ -151,7 +151,7 @@ public class CartActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        String orderID = user.getUid() + "" + cart.noOfItems + "" + cart.totalPrice;
+        String orderID = user.getUid() + "" + Timestamp.now().getNanoseconds()+Timestamp.now().getSeconds();
         Order newOrder = new Order(
                 orderID,
                 Timestamp.now(),
